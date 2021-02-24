@@ -18,4 +18,6 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 }
 
 qa_register_plugin_module('editor', 'qa-matheditor.php', 'qa_matheditor', 'MathEditor');
+qa_register_plugin_module('page', 'qa-wysiwyg-matheditor-upload.php', 'qa_wysiwyg_matheditor_upload', 'WYSIWYG MathEditor Upload');
+qa_register_plugin_phrases('qa-wysiwyg-lang-*.php', 'wysiwyg-matheditor');
 
