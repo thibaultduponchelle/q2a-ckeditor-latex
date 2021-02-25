@@ -16,11 +16,7 @@ class qa_matheditor {
             return 1.0;
         }
 
-		if ($format === '') {
-            return 0.8;
-        }
-
-		return 0;
+        return 0.8;
 	}
 
 	// Duplicate from /qa-plugin/wysiwyg-editor/qa-wysiwyg-editor.php
