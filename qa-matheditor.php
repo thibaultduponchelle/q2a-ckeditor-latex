@@ -1,25 +1,24 @@
 <?php
 
 class qa_matheditor {
-	
-	var $urltoroot;
-	var $config;
-	
-	function load_module($directory, $urltoroot)
+
+    var $urltoroot;
+
+    function load_module($directory, $urltoroot)
     {
-		$this->urltoroot=$urltoroot;
-	}
-	
-	function calc_quality($content, $format)
+        $this->urltoroot=$urltoroot;
+    }
+
+    function calc_quality($content, $format)
     {
-		if ($format === 'html') {
+        if ($format === 'html') {
             return 1.0;
         }
 
         return 0.8;
-	}
+    }
 
-	// Duplicate from /qa-plugin/wysiwyg-editor/qa-wysiwyg-editor.php
+    // Duplicate from /qa-plugin/wysiwyg-editor/qa-wysiwyg-editor.php
     // it was necessary to do it in order to make matheditor upload independent from another plugins
     public function admin_form(&$qa_content)
     {
@@ -68,24 +67,23 @@ class qa_matheditor {
             ],
         ];
     }
-	
-	function get_field(&$qa_content, $content, $format, $fieldname, $rows /* $autofocus parameter deprecated */)
-    {
-		$scriptsrc = $this->urltoroot.'ckeditor.js?'.QA_VERSION;
-		$alreadyadded = false;
 
-		if (isset($qa_content['script_src'])) {
+    function get_field(&$qa_content, $content, $format, $fieldname, $rows /* $autofocus parameter deprecated */)
+    {
+        $scriptsrc = $this->urltoroot.'ckeditor.js?'.QA_VERSION;
+        $alreadyadded = false;
+
+        if (isset($qa_content['script_src'])) {
             foreach ($qa_content['script_src'] as $testscriptsrc) {
                 if ($testscriptsrc === $scriptsrc) {
                     $alreadyadded = true;
                 }
             }
         }
-				
-		if (!$alreadyadded) {
+
+        if (!$alreadyadded) {
             $uploadimages = qa_opt('wysiwyg_editor_upload_images');
             $imageUploadUrl = qa_js(qa_path('wysiwyg-editor-upload', ['qa_only_image' => true]));
-            $fileUploadUrl = qa_js(qa_path('wysiwyg-editor-upload'));
 
             $qa_content['script_src'][] = $scriptsrc;
             $qa_content['script_lines'][] = [
@@ -99,65 +97,62 @@ class qa_matheditor {
 
                 '};',
             ];
-		}
+        }
 
         $html = $format === 'html' ? $content : qa_html($content, true);
-		
-		return [
-			'tags' => 'name="'.$fieldname.'"',
-			'value' => qa_html($html),
-			'rows' => $rows,
-            'html_prefix' => '<input name="'.$fieldname.'_ckeditor_ok" id="'.$fieldname.'_ckeditor_ok" type="hidden" value="0"><input name="'.$fieldname.'_ckeditor_data" id="'.$fieldname.'_ckeditor_data" type="hidden" value="'.qa_html($html).'">',
-		];
-	}
 
-	function load_script($fieldname)
+        return [
+            'tags' => 'name="'.$fieldname.'"',
+            'value' => qa_html($html),
+            'rows' => $rows,
+            'html_prefix' => '<input name="'.$fieldname.'_ckeditor_ok" id="'.$fieldname.'_ckeditor_ok" type="hidden" value="0"><input name="'.$fieldname.'_ckeditor_data" id="'.$fieldname.'_ckeditor_data" type="hidden" value="'.qa_html($html).'">',
+        ];
+    }
+
+    function load_script($fieldname)
     {
         return
-            "if (qa_ckeditor_{$fieldname} = CKEDITOR.replace(".qa_js($fieldname).", qa_wysiwyg_editor_config)) { " .
-                "qa_ckeditor_{$fieldname}.setData(document.getElementById(".qa_js($fieldname.'_ckeditor_data').").value); " .
+            "if (qa_matheditor_{$fieldname} = CKEDITOR.replace(".qa_js($fieldname).", qa_wysiwyg_editor_config)) { " .
+                "qa_matheditor_{$fieldname}.setData(document.getElementById(".qa_js($fieldname.'_ckeditor_data').").value); " .
                 "document.getElementById(".qa_js($fieldname.'_ckeditor_ok').").value = 1; " .
             "}";
-	}
-	
-	function focus_script($fieldname)
-    {
-		return "qa_matheditor_".$fieldname.".focus();";
-	}
-	
-	function update_script($fieldname)
-    {
-		return "qa_matheditor_".$fieldname.".updateElement();";
-	}
-	
-	function read_post($fieldname)
-    {
-		$html=qa_post_text($fieldname);
-		
-		$htmlformatting=preg_replace('/<\s*\/?\s*(br|p)\s*\/?\s*>/i', '', $html); // remove <p>, <br>, etc... since those are OK in text
-		
-		if (preg_match('/<.+>/', $htmlformatting)) // if still some other tags, it's worth keeping in HTML
-			return [
-				'format' => 'html',
-				'content' => qa_sanitize_html($html, false, true), // qa_sanitize_html() is ESSENTIAL for security
-			];
-		
-		else { // convert to text
-			$viewer=qa_load_module('viewer', '');
+    }
 
-			return [
-				'format' => '',
-				'content' => $viewer->get_text($html, 'html', [])
-			];
-		}
-	}
+    function focus_script($fieldname)
+    {
+        return "qa_matheditor_{$fieldname}.focus();";
+    }
+
+    function update_script($fieldname)
+    {
+        return "qa_matheditor_{$fieldname}.updateElement();";
+    }
+
+    function read_post($fieldname)
+    {
+        $html=qa_post_text($fieldname);
+
+        $htmlformatting=preg_replace('/<\s*\/?\s*(br|p)\s*\/?\s*>/i', '', $html); // remove <p>, <br>, etc... since those are OK in text
+
+        // if still some other tags, it's worth keeping in HTML
+        if (preg_match('/<.+>/', $htmlformatting)) {
+            return [
+                'format' => 'html',
+                'content' => qa_sanitize_html($html, false, true), // qa_sanitize_html() is ESSENTIAL for security
+            ];
+        }
+
+        // convert to text
+        $viewer=qa_load_module('viewer', '');
+
+        return [
+            'format' => '',
+            'content' => $viewer->get_text($html, 'html', [])
+        ];
+    }
 
     private function bytes_to_mega($bytes)
     {
         return $bytes / 1048576;
     }
 }
-
-/*
-	Omit PHP closing tag to help avoid accidental output
-*/
