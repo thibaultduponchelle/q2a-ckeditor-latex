@@ -3,9 +3,9 @@
 	Plugin Name: WYSIWYG Math Editor
 	Plugin URI: 
 	Plugin Description: WYSIWYG Math Editor
-	Plugin Version: 1.0.0
-	Plugin Date: 2019-09-06
-	Plugin Author: Thibault Duponchelle
+	Plugin Version: 1.1.0
+	Plugin Date: 2021-02-26
+	Plugin Author: Thibault Duponchelle and Chepheus
 	Plugin Author URI: https://github.com/thibaultduponchelle/q2a-ckeditor-latex
 	Plugin License: GPLv2
 	Plugin Minimum Question2Answer Version: 1.5.1
