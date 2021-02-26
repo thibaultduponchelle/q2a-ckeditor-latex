@@ -1,6 +1,7 @@
 # :black_nib: Q2A Math Editor (LaTeX)
 
 **06-08-2019 : Tested with 1.8.2** :heavy_check_mark:
+
 **26-02-2021 : Tested with 1.8.5** :heavy_check_mark:
 
 ## :clipboard: Description
