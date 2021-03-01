@@ -1,8 +1,8 @@
 # :black_nib: Q2A Math Editor (LaTeX)
 
-**06-08-2019 : Tested with 1.8.2** :heavy_check_mark:
+**06-08-2019: Tested with 1.8.2** :heavy_check_mark:
 
-**26-02-2021 : Tested with 1.8.5** :heavy_check_mark:
+**26-02-2021: Tested with 1.8.5** :heavy_check_mark:
 
 ## :clipboard: Description
 
@@ -45,11 +45,11 @@ And you're done !
 
 ## :rainbow: Demo
 
-When you go to post a question you will have this new WYSIWYG editor with an **Sigma** in the toolbar (+ various other plugins selected by me) : 
+When you go to post a question you will have this new WYSIWYG editor with an **Sigma** in the toolbar (+ various other plugins selected by me): 
 
 ![](screenies/editor.png)
 
-When you click on the **Sigma** button you will have a popup and you can start editing **Math Formulas** with a visual feedback : 
+When you click on the **Sigma** button you will have a popup and you can start editing **Math Formulas** with a visual feedback: 
 
 ![](screenies/editmath.png)
 
